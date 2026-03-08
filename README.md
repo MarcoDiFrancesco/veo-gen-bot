@@ -53,7 +53,7 @@ Why? Because Google Cloud offers 300 USD of credits for new accounts.
 Run the bot with:
 
 ```bash
-python -m bot.main
+python3 -m bot.main
 ```
 
 The bot will start polling for messages. You should see log messages indicating the bot has started.

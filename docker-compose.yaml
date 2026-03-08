@@ -1,7 +1,7 @@
 services:
-  telegram-bot:
+  veo-gen-bot:
     build: .
-    container_name: telegram-video-gen
+    container_name: veo-gen-bot
     restart: unless-stopped
     env_file:
       - .env

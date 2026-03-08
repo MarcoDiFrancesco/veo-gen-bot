@@ -29,9 +29,9 @@ async def cmd_help(message: Message):
 /start - Welcome message
 /help - Show this help message
 /settings - View current settings
-/setmodel [model] - Set Veo model
-/setduration [seconds] - Set video duration
-/setresolution [resolution] - Set video resolution
+  /setmodel [model] - Set Veo model
+  /setduration [seconds] - Set video duration
+  /setresolution [resolution] - Set video resolution
 /reset - Reset settings to defaults
 /stats - View usage statistics
 
@@ -77,12 +77,7 @@ async def cmd_setmodel(message: Message):
             "📋 Available models (Veo 3.0 and 3.1 only):\n\n"
             "<b>Veo 3.1 models:</b>\n"
             "  • <code>veo-3.1-generate-001</code>\n"
-            "  • <code>veo-3.1-fast-generate-001</code> (default)\n"
-            "  • <code>veo-3.1-generate-preview</code>\n"
-            "  • <code>veo-3.1-fast-generate-preview</code>\n\n"
-            "<b>Veo 3.0 models:</b>\n"
-            "  • <code>veo-3.0-generate-001</code>\n"
-            "  • <code>veo-3.0-fast-generate-001</code>\n\n"
+            "  • <code>veo-3.1-fast-generate-001</code>\n\n"
             "💡 Use /help to explore other commands."
         )
         return
@@ -93,23 +88,13 @@ async def cmd_setmodel(message: Message):
     valid_models = [
         "veo-3.1-generate-001",
         "veo-3.1-fast-generate-001",
-        "veo-3.1-generate-preview",
-        "veo-3.1-fast-generate-preview",
-        "veo-3.0-generate-001",
-        "veo-3.0-fast-generate-001",
     ]
     
     if model not in valid_models:
-        veo3_1_models = [m for m in valid_models if "veo-3.1" in m]
-        veo3_0_models = [m for m in valid_models if "veo-3.0" in m]
-        
         await message.answer(
             f"❌ Invalid model: <code>{model}</code>\n\n"
-            "📋 Please use one of the supported models (Veo 3.0 and 3.1 only):\n\n"
-            "<b>Veo 3.1 models:</b>\n" +
-            "\n".join(f"  • <code>{m}</code>" for m in veo3_1_models) + "\n\n"
-            "<b>Veo 3.0 models:</b>\n" +
-            "\n".join(f"  • <code>{m}</code>" for m in veo3_0_models) + "\n\n"
+            "📋 Please use one of the supported models:\n\n"
+            "\n".join(f"  • <code>{m}</code>" for m in valid_models) + "\n\n"
             "💡 Use /help to explore other commands."
         )
         return
@@ -126,11 +111,6 @@ async def cmd_setduration(message: Message):
     user_settings = db_settings.get_user_settings(message.from_user.id)
     model = user_settings["model"]
     
-    # Determine model type for clearer messaging
-    is_veo3_0 = "veo-3.0" in model
-    is_veo3_1 = "veo-3.1" in model
-    model_type = "Veo 3.0" if is_veo3_0 else "Veo 3.1" if is_veo3_1 else "Veo 3"
-    
     # Valid durations for Veo 3 models (both 3.0 and 3.1)
     valid_durations = [4, 6, 8]
     
@@ -142,7 +122,7 @@ async def cmd_setduration(message: Message):
             f"Usage: /setduration [seconds]\n\n"
             f"Example:\n"
             f"<code>/setduration 8</code>\n\n"
-            f"📋 Valid durations for {model_type} models:\n"
+            f"📋 Valid durations:\n"
             f"  • <code>4</code> seconds\n"
             f"  • <code>6</code> seconds\n"
             f"  • <code>8</code> seconds(default)\n\n"
@@ -158,7 +138,7 @@ async def cmd_setduration(message: Message):
         await message.answer(
             f"❌ Invalid duration. Please provide a number.\n\n"
             f"Usage: /setduration [seconds]\n\n"
-            f"Valid durations for {model_type} models:\n"
+            f"Valid durations:\n"
             f"  • <code>4</code> seconds\n"
             f"  • <code>6</code> seconds\n"
             f"  • <code>8</code> seconds\n\n"
@@ -170,7 +150,7 @@ async def cmd_setduration(message: Message):
     if duration not in valid_durations:
         await message.answer(
             f"❌ Invalid duration: <code>{duration}</code> seconds\n\n"
-            f"📋 Valid durations for {model_type} models:\n"
+            f"📋 Valid durations:\n"
             f"  • <code>4</code> seconds\n"
             f"  • <code>6</code> seconds\n"
             f"  • <code>8</code> seconds\n\n"
